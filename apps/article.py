@@ -47,9 +47,15 @@ class Article(BaseHandler):
         ).first()
         if not article:
             return utils.common.raise_error(request=self, status_code=404)
-        article = article.json
+        # 兼容以前的数据
+        if not article.views:
+            article.views = 0
+        # 更新浏览次数
+        article.views += 1
+        session.add(article)
         session.commit()
+        article_data = article.json
         session.close()
         data = {}
-        data['article'] = article
+        data['article'] = article_data
         self.render('article.html', data=data)

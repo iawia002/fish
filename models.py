@@ -38,6 +38,10 @@ class Article(Base):
     source = sa.Column(
         sa.String(1000),
     )
+    views = sa.Column(
+        sa.Integer,
+        default=0,
+    )
 
     def __repr__(self):
         return "<Article(id='%d')>" % self.article_id
@@ -52,6 +56,7 @@ class Article(Base):
             'content': self.content,
             'image_num': self.image_num,
             'source': self.source,
+            'views': self.views if self.views else 0,
         }
 
 
