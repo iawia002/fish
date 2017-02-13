@@ -84,16 +84,13 @@ def jike():
         JK_API,
     ).json()
     messages = results['messages']
-    messages_id = [str(message['messageId']) for message in messages]
+    messages_url = [message['linkUrl'] for message in messages]
     session = Session()
     update_record = session.query(UpdateInfo).first()
-    already_existing_messages = update_record.content
-    need_update = list(set(messages_id) - set(already_existing_messages))
-    answers = []
-    for message in messages:
-        if str(message['messageId']) in need_update:
-            answers.append(message['linkUrl'])
-    for url in answers:
+    already_existing = update_record.content
+    # 用这次的 URL 列表减去已经存在的 URL 列表，得到这次多出来的 URL
+    need_update = list(set(messages_url) - set(already_existing))
+    for url in need_update:
         article = utils.db.get_or_create(session, Article, source=url)
         result = imgs(url)
         article.content = result['images']
@@ -101,14 +98,37 @@ def jike():
         article.image_num = len(result['images'])
         session.add(article)
     total = []
-    total.extend(already_existing_messages)
+    total.extend(already_existing)
     total.extend(need_update)
     print need_update
     update_record.content = total
     session.add(update_record)
     session.commit()
     session.close()
-    return answers
+    return need_update
+
+
+def update_manually(url):
+    session = Session()
+
+    # 更新文章
+    article = utils.db.get_or_create(session, Article, source=url)
+    result = imgs(url)
+    article.content = result['images']
+    article.title = result['title']
+    article.image_num = len(result['images'])
+
+    # 更新记录
+    update_record = session.query(UpdateInfo).first()
+    total = update_record.content
+    if url not in total:
+        total.append(url)
+    update_record.content = total
+
+    session.add(article)
+    session.add(update_record)
+    session.commit()
+    session.close()
 
 
 if __name__ == '__main__':
