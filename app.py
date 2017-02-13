@@ -4,6 +4,7 @@ import os
 
 import tornado.web
 import tornado.ioloop
+from tornado import gen
 from tornado.options import (
     define,
     options,
@@ -51,9 +52,16 @@ tornado.options.parse_command_line()
 application = Application()
 
 
+@gen.coroutine
+def loop():
+    while True:
+        yield jike()
+        yield gen.sleep(60 * 60 * 2)
+
+
 def main():
     application.listen(options.port)
-    tornado.ioloop.PeriodicCallback(jike, 1000 * 60 * 60 * 2).start()
+    tornado.ioloop.IOLoop.current().spawn_callback(loop)
     tornado.ioloop.IOLoop.current().start()
 
 if __name__ == '__main__':
