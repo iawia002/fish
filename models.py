@@ -40,7 +40,7 @@ class Article(Base):
     )
 
     def __repr__(self):
-        return "<Article(title='%s')>" % self.title
+        return "<Article(id='%d')>" % self.article_id
 
     @property
     def json(self):

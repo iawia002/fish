@@ -120,7 +120,8 @@ def update_manually(url):
 
     # 更新记录
     update_record = session.query(UpdateInfo).first()
-    total = update_record.content
+    total = []
+    total.extend(update_record.content)
     if url not in total:
         total.append(url)
     update_record.content = total
