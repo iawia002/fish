@@ -11,9 +11,8 @@
     {% include 'top.html' %}
     <div class="main">
         {% include 'article_list.html' %}
-
-        {% include 'footer.html' %}
     </div>
     <input type="hidden" value="{{ data['next_page'] }}" id="next_page">
+    {% include 'footer.html' %}
 </body>
 </html>
