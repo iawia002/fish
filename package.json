@@ -17,7 +17,7 @@
     "keymaster": "^1.6.2",
     "lodash.map": "^4.6.0",
     "normalize.css": "^4.2.0",
-    "photoswipe": "^4.1.1",
+    "photoswipe": "^4.1.1"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.9",

@@ -93,3 +93,4 @@ npm-debug.log
 /static/ssl/*
 !/static/ssl/.gitkeep
 local_*.py
+/images/local
