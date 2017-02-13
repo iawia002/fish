@@ -1,6 +1,7 @@
 # [知乎热门钓鱼帖](http://fish.jifangcheng.com)
 
-> ![](images/5.jpg)
+![](images/5.jpg)
+
 > ###**好好反省一下，别人怎么就能提那么多问题呢**
 
 [![](images/1.png)](http://fish.jifangcheng.com)
@@ -18,6 +19,7 @@
 
 ### 后端
 #### 使用 docker 🐳
+* `pip install fabric` 安装 fabric
 * `cp config/local_config.py.tpl config/local_config.py` 初始化数据库相关配置，要修改数据库相关配置改 `local_config.py` 就可以了
 * `fab migrate` 数据库迁移
 * `fab init` 初始化（初始化数据可能要几分钟）
