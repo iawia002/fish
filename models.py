@@ -61,6 +61,11 @@ class Article(Base):
 
 
 class UpdateInfo(Base):
+    '''
+    只有一条记录
+
+    content 是所有已经爬取过的页面的 URL 列表
+    '''
     __tablename__ = 'update_info'
 
     update_id = sa.Column(
