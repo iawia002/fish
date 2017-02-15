@@ -13,5 +13,9 @@ engine = create_engine(
     max_overflow=10,
 )
 
-Session = sessionmaker(bind=engine)
-session = Session()
+Session = sessionmaker(
+    bind=engine,
+    autoflush=True,
+    autocommit=False,
+)
+# session = Session()

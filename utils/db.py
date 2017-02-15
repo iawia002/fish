@@ -21,8 +21,8 @@ def get_or_create(session, model, defaults=None, **kwargs):
         )
         params.update(defaults or {})
         instance = model(**params)
-        session.add(instance)
-        session.commit()
+        # session.add(instance)
+        # session.commit()
         return instance
 
 
