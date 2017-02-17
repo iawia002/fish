@@ -1,6 +1,7 @@
 # coding=utf-8
 
 import os
+from concurrent.futures import ThreadPoolExecutor
 
 import tornado.web
 import tornado.ioloop
@@ -19,7 +20,7 @@ from crawler.zhihu import jike
 # 在options中设置几个变量
 define('port', default=8007, help='run on this port', type=int)
 define('debug', default=False, help='enable debug mode')
-# options.log_file_prefix = '/etc/logs/zed.tornado.log'
+# options.log_file_prefix = '/etc/logs/tornado.log'
 
 
 class Application(tornado.web.Application):
@@ -51,12 +52,14 @@ class Application(tornado.web.Application):
 tornado.options.parse_command_line()
 application = Application()
 
+thread_pool = ThreadPoolExecutor(2)
+
 
 @gen.coroutine
 def loop():
     while True:
-        yield jike()
-        yield gen.sleep(60 * 60 * 2)
+        yield thread_pool.submit(jike)
+        yield gen.sleep(60 * 60 * 1)
 
 
 def main():
