@@ -24,7 +24,7 @@
         <div class="article">
             <h1>{{ data['article']['title'] }}</h1>
             {% for img in data['article']['content'] %}
-                <img src="{{ img }}" />
+                <img data-src="{{ img }}" class="lazyload" />
             {% end %}
             <br />
             <br />

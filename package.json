@@ -15,9 +15,9 @@
     "hammerjs": "^2.0.8",
     "jquery": "^3.0.0",
     "keymaster": "^1.6.2",
+    "lazysizes": "^3.0.0-rc4",
     "lodash.map": "^4.6.0",
-    "normalize.css": "^4.2.0",
-    "photoswipe": "^4.1.1"
+    "normalize.css": "^4.2.0"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.9",

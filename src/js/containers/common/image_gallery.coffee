@@ -10,7 +10,7 @@ class ImageGallery
   getImages: ->
     images = $(@selector + ' img')
     imageSrc = map(images, (img) ->
-      img.src
+      $(img).attr('data-src')
     )
     return imageSrc
 
