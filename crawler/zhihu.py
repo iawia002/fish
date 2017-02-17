@@ -82,7 +82,10 @@ def jike():
     ).format(topic_id='57281cf75f0ba71200ffde92')
     results = requests.get(
         JK_API,
-    ).json()
+    )
+    if results.status_code != 200:
+        return
+    results = results.json()
     messages = results['messages']
     messages_url = [message['linkUrl'] for message in messages]
     session = Session()
@@ -100,7 +103,6 @@ def jike():
     total = []
     total.extend(already_existing)
     total.extend(need_update)
-    print need_update
     update_record.content = total
     session.add(update_record)
     session.commit()
@@ -128,7 +130,11 @@ def update_manually(url):
 
     session.add(article)
     session.add(update_record)
-    session.commit()
+    try:
+        session.commit()
+    except:
+        session.rollback()
+        raise
     session.close()
 
 

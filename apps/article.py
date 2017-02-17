@@ -25,6 +25,10 @@ class Index(BaseHandler):
 class More(BaseHandler):
     def get(self):
         next_page = self.get_argument('next_page')
+        try:
+            next_page = int(next_page)
+        except ValueError:
+            return self.write('')
         articles = utils.db.article(page=next_page)
 
         if not articles:
@@ -33,7 +37,7 @@ class More(BaseHandler):
         data['articles'] = articles
         article_list = self.render_string('article_list.html', data=data)
         ret = {
-            'next_page': int(next_page) + 1,
+            'next_page': next_page + 1,
             'data': article_list
         }
         self.write(ret)
