@@ -1,9 +1,12 @@
 // 右侧栏
 @import "base";
 @import "animate";
+
 // @media (max-width: 1199){ //<=1199的设备 }
 // @media (max-width: 991px){ //<=991的设备 }
 // @media (max-width: 767px){ //<=768的设备 }
+// @media (max-width: 575px) {}
+
 
 .bg {
   background: $light-gray;
@@ -11,11 +14,7 @@
 
 .main {
   background: $light-gray;
-  padding: 20px 0;
-}
-
-.avatar {
-  @include avatar;
+  padding: 0px 0px 20px 0px;
 }
 
 .article {
@@ -79,25 +78,25 @@
   }
 }
 
+@media (max-width: 991px){
+  html {
+    font-size: 15px;
+  }
+}
+
 @media (max-width: 767px) {
-  // html {
-  //   font-size: 14px;
-  // }
+  html {
+    font-size: 14px;
+  }
 
   .avatar {
-    margin-top: 20px;
     width: 100px;
     height: 100px;
   }
+}
 
-  .top {
-    height: 250px;
-    h1 {
-      font-size: 1.4rem;
-    }
-
-    p {
-      font-size: 1.3rem;
-    }
+@media (max-width: 575px) {
+  html {
+    font-size: 13px;
   }
 }
