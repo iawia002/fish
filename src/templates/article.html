@@ -30,27 +30,10 @@
                 <img data-src="{{ img }}" class="lazyload" />
             {% end %}
         </div>
-        <div class="article" style="padding: 20px;">
+        <!-- <div class="article" style="padding: 20px;">
             <div id="disqus_thread"></div>
-        </div>
+        </div> -->
     </div>
-
-    <script>
-        var disqus_config = function () {
-            this.page.url = "http://fish.jifangcheng.com/p/{{ data['article']['article_id'] }}";
-            this.page.identifier = {{ data['article']['article_id'] }};
-        };
-        (function() {
-            var d = document, s = d.createElement('script');
-
-            s.src = '//theycallmel.disqus.com/embed.js';
-
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-    <!-- <script id="dsq-count-scr" src="//theycallmel.disqus.com/count.js" async></script> -->
 
     {% include 'footer.html' %}
 </body>
