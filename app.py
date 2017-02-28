@@ -1,6 +1,8 @@
 # coding=utf-8
 
 import os
+import logging
+import datetime
 from concurrent.futures import ThreadPoolExecutor
 
 import tornado.web
@@ -58,8 +60,14 @@ thread_pool = ThreadPoolExecutor(2)
 @gen.coroutine
 def loop():
     while True:
-        yield thread_pool.submit(jike)
-        yield gen.sleep(60 * 60 * 1)
+        logging.info(
+            '{}: update start'.format(
+                datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            )
+        )
+        result = yield thread_pool.submit(jike)
+        logging.info('update result: {}'.format(result))
+        yield gen.sleep(60 * 60 * 0.5)
 
 
 def main():
