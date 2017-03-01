@@ -22,6 +22,7 @@ ARTICLE_PAGE_NUMBER = 10
 
 SECRET_KEY = 'sfljKLYIOY9&()w3rpu39jlfsdf()*))ljsfl&^sfjsfow%*'
 
+COOKIE = ''
 
 try:
     from local_config import *  # noqa

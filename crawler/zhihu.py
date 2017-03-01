@@ -3,6 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 
+import config
 import utils.db
 from db.sa import Session
 from models import Article, UpdateInfo
@@ -30,14 +31,18 @@ def img_with_data_original(tag):
 
 
 def imgs(url):
-    ZH_API = 'https://www.zhihu.com/node/QuestionAnswerListV2'
+    include = 'data[*].is_normal,is_sticky,collapsed_by,suggest_edit,comment_count,collapsed_counts,reviewing_comments_count,can_comment,content,editable_content,voteup_count,reshipment_settings,comment_permission,mark_infos,created_time,updated_time,relationship.is_author,voting,is_thanked,is_nothelp,upvoted_followees;data[*].author.is_blocking,is_blocked,is_followed,voteup_count,message_thread_token,badge[?(type=best_answerer)].topics'  # noqa
+    limit = 20
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.8 (KHTML, like Gecko) Version/9.1.3 Safari/601.7.8'  # noqa
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.8 (KHTML, like Gecko) Version/9.1.3 Safari/601.7.8',  # noqa
+        'Host': 'www.zhihu.com',
+        'Cookie': config.COOKIE,
     }
-    post_headers = {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-    }
-    post_headers.update(headers)
+    ZH_API = (
+        'https://www.zhihu.com/api/v4/questions/{question_id}/answers?'
+        'include={include}&sort_by=default&limit={limit}&offset={offset}'
+    ).format
+
     url = url.split('?')[0]
     if url[-1] == '/':
         question_id = url.split('/')[-2]
@@ -48,22 +53,31 @@ def imgs(url):
         headers=headers,
     ).text
     soup = BeautifulSoup(html_text, 'html.parser')
-    answer_num = int(soup.find(id='zh-question-answer-num')['data-num'])
     title = soup.title.string
-    page = answer_num / 10
-    if answer_num % 10 != 0:
+
+    answer_url = ZH_API(
+        include=include,
+        question_id=question_id,
+        limit=1,
+        offset=0,
+    )
+    r = requests.get(answer_url, headers=headers)
+    answer_num = r.json()['paging']['totals']
+
+    page = answer_num / limit
+    if answer_num % limit != 0:
         page += 1
     answers = []
     for item in xrange(page):
-        data = (
-            'method=next&params='
-            '{{"url_token":{question_id},"pagesize":10,"offset":{offset}}}'
-        ).format(
+        answer_url = ZH_API(
+            include=include,
+            limit=limit,
             question_id=question_id,
-            offset=item*10
+            offset=item*limit
         )
-        r = requests.post(ZH_API, headers=post_headers, data=data)
-        answers.extend(r.json()['msg'])
+        r = requests.get(answer_url, headers=headers)
+        data = r.json()['data']
+        answers.extend([item['content'] for item in data])
     img_list = []
     for answer in answers:
         soup = BeautifulSoup(answer, 'html.parser')
