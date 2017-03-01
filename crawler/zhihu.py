@@ -152,5 +152,10 @@ def update_manually(url):
     session.close()
 
 
+def batch_update(urls):
+    for url in urls:
+        update_manually(url)
+
+
 if __name__ == '__main__':
     __import__('ipdb').set_trace()
