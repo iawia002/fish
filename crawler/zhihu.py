@@ -1,5 +1,6 @@
 # coding=utf-8
 
+import time
 import requests
 from bs4 import BeautifulSoup
 
@@ -68,6 +69,8 @@ def imgs(url):
     if answer_num % limit != 0:
         page += 1
     answers = []
+
+    time.sleep(2)  # 睡眠 2 s，知乎有反爬虫策略
     for item in xrange(page):
         answer_url = ZH_API(
             include=include,
@@ -78,6 +81,8 @@ def imgs(url):
         r = requests.get(answer_url, headers=headers)
         data = r.json()['data']
         answers.extend([item['content'] for item in data])
+
+        time.sleep(2)  # 睡眠 2 s，知乎有反爬虫策略
     img_list = []
     for answer in answers:
         soup = BeautifulSoup(answer, 'html.parser')
